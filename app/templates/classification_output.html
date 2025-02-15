@@ -3,7 +3,6 @@
 {% block content %}
     <style>
         .large-front-thumbnail {
-            position: relative;
             max-width: 100%;
             height: auto;
             display: block;
@@ -13,9 +12,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card mb-4">
-                <img class="large-front-thumbnail"
-                     src="/static/imagenet_subset/{{ image_id }}"
-                     alt="{{ image_id }}"/>
+                <img class="large-front-thumbnail" src="/static/imagenet_subset/{{ image_id }}" alt="{{ image_id }}"/>
             </div>
         </div>
         <div class="col-md-6">

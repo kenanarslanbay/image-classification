@@ -11,24 +11,25 @@ from app.utils import list_images
 
 # New import for the upload routes.
 from app.routes.upload import router as upload_router
+# New import for the histogram routes.
+from app.routes.histogram import router as histogram_router
 
 app = FastAPI()
 
 # Mount static files and configure templates.
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
-# Make the templates available in the app state so that submodules (like the upload routes) can use them.
+# Make the templates available in the app state so submodules (upload, histogram) can use them.
 app.state.templates = templates
 
-# Instantiate configuration (if needed later)
+# Instantiate configuration
 config = Configuration()
 
 @app.get("/info")
 def info() -> dict[str, list[str]]:
     list_of_images = list_images()
     list_of_models = Configuration.models
-    data = {"models": list_of_models, "images": list_of_images}
-    return data
+    return {"models": list_of_models, "images": list_of_images}
 
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
@@ -48,24 +49,17 @@ async def request_classification(request: Request):
     if not form.is_valid():
         return templates.TemplateResponse(
             "classification_select.html",
-            {
-                "request": request,
-                "errors": form.errors,
-                "images": list_images(),
-                "models": Configuration.models,
-            },
+            {"request": request, "errors": form.errors, "images": list_images(), "models": Configuration.models},
         )
     image_id = form.image_id
     model_id = form.model_id
     classification_scores = classify_image(model_id=model_id, img_id=image_id)
     return templates.TemplateResponse(
         "classification_output.html",
-        {
-            "request": request,
-            "image_id": image_id,
-            "classification_scores": json.dumps(classification_scores),
-        },
+        {"request": request, "image_id": image_id, "classification_scores": json.dumps(classification_scores)},
     )
 
-# Include the new upload routes under the /classifications prefix.
+# Include upload routes under the /classifications prefix.
 app.include_router(upload_router, prefix="/classifications")
+# Include histogram routes under the /histogram prefix.
+app.include_router(histogram_router, prefix="/histogram")
