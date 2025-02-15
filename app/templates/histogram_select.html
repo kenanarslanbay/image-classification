@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Select Image for Histogram</h1>
+    <form action="/histogram/select" method="post" novalidate>
+        <div class="form-group">
+            <label for="image_id"><strong>Image:</strong></label>
+            <select class="form-control" id="image_id" name="image_id">
+                {% for image in images %}
+                  <option value="{{ image }}">{{ image }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+{% endblock %}
