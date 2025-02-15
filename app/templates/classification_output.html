@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-
     <style>
         .large-front-thumbnail {
             position: relative;
@@ -10,28 +9,24 @@
             display: block;
             margin: 0 auto;
         }
-
     </style>
     <div class="row">
-        <div class="col">
-            <div class="card">
+        <div class="col-md-6">
+            <div class="card mb-4">
                 <img class="large-front-thumbnail"
-                     src="{{ 'static/imagenet_subset/'+image_id }} "
-                     alt={{ image_id }}/>
+                     src="/static/imagenet_subset/{{ image_id }}"
+                     alt="{{ image_id }}"/>
             </div>
         </div>
-        <div class="col">
-            <div class="card">
-                <div class="row">
-                    <canvas id="classificationOutput" style="width: 50%; margin: auto; padding: 20px;"></canvas>
-                    <div class="align-items-center">
-                        <h2 id="waitText"></h2>
-                        </div>
-                    </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <canvas id="classificationOutput" style="width: 100%; margin: auto; padding: 20px;"></canvas>
+                    <h2 id="waitText"></h2>
                 </div>
-                <a class="btn btn-primary" href="/classifications" role="button">Back</a>
+            </div>
+            <a class="btn btn-primary" href="/classifications" role="button">Back</a>
         </div>
     </div>
-    <script src="{{ "static/graph.js" }}" id="makeGraph" classification_scores="{{classification_scores}}"></script>
+    <script src="/static/graph.js" id="makeGraph" classification_scores="{{ classification_scores }}"></script>
 {% endblock %}
-
